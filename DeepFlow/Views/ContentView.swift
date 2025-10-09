@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var selectedTab = 1
+    @StateObject private var sessionStore = SessionStore()
     
     var body: some View {
         ZStack {
@@ -38,7 +39,7 @@ struct ContentView: View {
                 SummaryView()
                     .tabItem {
                         VStack {
-                            Image(systemName: selectedTab == 2 ? "chart.bar.circle.fill" : "chart.bar")
+                            Image(systemName: selectedTab == 2 ? "chart.bar.fill" : "chart.bar")
                                 .environment(\.symbolVariants, selectedTab == 2 ? .fill : .none)
                             Text("Resumen")
                         }
@@ -50,7 +51,7 @@ struct ContentView: View {
                 // Personalizar la apariencia del TabView para iOS 15+
                 let appearance = UITabBarAppearance()
                 appearance.configureWithOpaqueBackground()
-                appearance.backgroundColor = UIColor.black.withAlphaComponent(0.9)
+                appearance.backgroundColor = UIColor.black.withAlphaComponent(0.95)
                 
                 // Estilo para los items no seleccionados
                 appearance.stackedLayoutAppearance.normal.iconColor = UIColor.gray
@@ -64,6 +65,7 @@ struct ContentView: View {
                 UITabBar.appearance().standardAppearance = appearance
                 UITabBar.appearance().scrollEdgeAppearance = appearance
             }
+            .environmentObject(sessionStore)
         }
     }
 }

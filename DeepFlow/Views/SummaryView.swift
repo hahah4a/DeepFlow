@@ -1,23 +1,79 @@
 import SwiftUI
 
 struct SummaryView: View {
+    @EnvironmentObject var sessionStore: SessionStore
     @State private var selectedTimeFrame = 0
     let timeFrames = ["Hoy", "Semana", "Mes", "Total"]
     
-    // Datos de ejemplo - luego conectaremos con datos reales
-    let sessionStats = [
-        ("Sesiones Completadas", "12", "checkmark.circle.fill", Color.green),
-        ("Tiempo Total", "8h 30m", "clock.fill", Color.blue),
-        ("Tiempo en Flow", "6h 15m", "brain.head.profile", Color.purple),
-        ("Focus Promedio", "74%", "chart.line.uptrend.xyaxis", Color.orange)
-    ]
+    // Datos reales del SessionStore
+    var displayedSessions: [Session] {
+        switch selectedTimeFrame {
+        case 0: return sessionStore.getTodaysSessions()
+        case 1: return sessionStore.getThisWeeksSessions()
+        case 2: return sessionStore.sessions.filter {
+            Calendar.current.isDate($0.date, equalTo: Date(), toGranularity: .month)
+        }
+        default: return sessionStore.sessions
+        }
+    }
     
-    let recentSessions = [
-        ("Diseño UI", "2h", "Hoy - 14:30", true),
-        ("Reunión Planificación", "1h", "Hoy - 10:15", false),
-        ("Desarrollo Features", "3h", "Ayer - 15:45", true),
-        ("Revision Código", "45m", "Ayer - 11:20", true)
-    ]
+    var sessionStats: [(String, String, String, Color)] {
+        let totalTime = sessionStore.totalFocusTime()
+        let hours = totalTime / 3600
+        let minutes = (totalTime % 3600) / 60
+        
+        return [
+            ("Sesiones Completadas", "\(sessionStore.totalSessions())", "checkmark.circle.fill", Color.green),
+            ("Tiempo Total", "\(hours)h \(minutes)m", "clock.fill", Color.blue),
+            ("Focus Promedio", "\(sessionStore.averageFocusPercentage())%", "chart.line.uptrend.xyaxis", Color.orange),
+            ("Sesiones Hoy", "\(sessionStore.getTodaysSessions().count)", "flame.fill", Color.purple)
+        ]
+    }
+    
+    // Insights basados en datos reales
+    var insights: [(String, String, String, Color)] {
+        var insightsList: [(String, String, String, Color)] = []
+        
+        let todaysSessions = sessionStore.getTodaysSessions()
+        if todaysSessions.count >= 3 {
+            insightsList.append((
+                "sparkles",
+                "Día productivo",
+                "Has completado \(todaysSessions.count) sesiones hoy",
+                .yellow
+            ))
+        }
+        
+        if sessionStore.averageFocusPercentage() > 80 {
+            insightsList.append((
+                "brain.head.profile",
+                "Alto enfoque",
+                "Tu focus promedio es excelente",
+                .green
+            ))
+        }
+        
+        if sessionStore.totalSessions() > 10 {
+            insightsList.append((
+                "flag",
+                "Muy constante",
+                "Llevas \(sessionStore.totalSessions()) sesiones",
+                .blue
+            ))
+        }
+        
+        // Insight por defecto si no hay datos
+        if insightsList.isEmpty {
+            insightsList.append((
+                "lightbulb",
+                "Comienza tu journey",
+                "Completa tu primera sesión para ver insights",
+                .gray
+            ))
+        }
+        
+        return insightsList
+    }
     
     var body: some View {
         ZStack {
@@ -28,9 +84,10 @@ struct SummaryView: View {
             
             VStack {
                 Rectangle()
-                    .frame(width: 400,height: 0)
+                    .frame(width: 400, height: 0)
                     .foregroundStyle(Color.blue)
                     .ignoresSafeArea()
+                
                 ScrollView {
                     VStack(spacing: 30) {
                         // Header
@@ -69,7 +126,7 @@ struct SummaryView: View {
                         )
                         .padding(.horizontal)
                         
-                        // Estadísticas principales
+                        // Estadísticas principales con datos reales
                         LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 2), spacing: 16) {
                             ForEach(sessionStats, id: \.0) { stat in
                                 StatCard(
@@ -82,59 +139,79 @@ struct SummaryView: View {
                         }
                         .padding(.horizontal)
                         
-                        // Sesiones recientes
-                        VStack(alignment: .leading, spacing: 20) {
-                            HStack {
-                                Text("Sesiones Recientes")
-                                    .font(.title2)
-                                    .fontWeight(.bold)
+                        // Sesiones recientes con datos reales
+                        if !displayedSessions.isEmpty {
+                            VStack(alignment: .leading, spacing: 20) {
+                                HStack {
+                                    Text("Sesiones Recientes")
+                                        .font(.title2)
+                                        .fontWeight(.bold)
+                                        .foregroundColor(.white)
+                                    
+                                    Spacer()
+                                    
+                                    Text("\(displayedSessions.count) sesiones")
+                                        .font(.caption)
+                                        .foregroundColor(.gray)
+                                }
+                                .padding(.horizontal)
+                                
+                                VStack(spacing: 12) {
+                                    ForEach(displayedSessions.prefix(6)) { session in
+                                        SessionRow(
+                                            title: session.objective,
+                                            duration: "\(session.duration) min",
+                                            date: session.formattedDate(),
+                                            completed: session.completed,
+                                            focusPercentage: session.focusPercentage()
+                                        )
+                                    }
+                                }
+                                .padding(.horizontal)
+                            }
+                        } else {
+                            // Mensaje cuando no hay sesiones
+                            VStack(spacing: 20) {
+                                Image(systemName: "clock.badge.questionmark")
+                                    .font(.system(size: 50))
+                                    .foregroundColor(.gray)
+                                
+                                Text("No hay sesiones registradas")
+                                    .font(.headline)
                                     .foregroundColor(.white)
                                 
-                                Spacer()
-                                
-                                Text("Ver todo")
+                                Text("Completa tu primera sesión de focus para ver estadísticas")
                                     .font(.caption)
                                     .foregroundColor(.gray)
+                                    .multilineTextAlignment(.center)
                             }
-                            .padding(.horizontal)
-                            
-                            VStack(spacing: 12) {
-                                ForEach(recentSessions, id: \.0) { session in
-                                    SessionRow(
-                                        title: session.0,
-                                        duration: session.1,
-                                        date: session.2,
-                                        completed: session.3
-                                    )
-                                }
-                            }
+                            .padding()
+                            .background(Color.white.opacity(0.05))
+                            .cornerRadius(12)
                             .padding(.horizontal)
                         }
                         
-                        // Insights
-                        VStack(alignment: .leading, spacing: 15) {
-                            Text("Insights")
-                                .font(.title2)
-                                .fontWeight(.bold)
-                                .foregroundColor(.white)
-                                .padding(.horizontal)
-                            
-                            VStack(spacing: 12) {
-                                InsightCard(
-                                    icon: "sparkles",
-                                    title: "Mejor horario",
-                                    description: "Eres más productivo entre 14:00 - 17:00",
-                                    color: .yellow
-                                )
+                        // Insights con datos reales
+                        if !insights.isEmpty {
+                            VStack(alignment: .leading, spacing: 15) {
+                                Text("Insights")
+                                    .font(.title2)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.white)
+                                    .padding(.horizontal)
                                 
-                                InsightCard(
-                                    icon: "flag",
-                                    title: "Récord personal",
-                                    description: "4 sesiones completadas en un día",
-                                    color: .green
-                                )
+                                VStack(spacing: 12) {
+                                    ForEach(insights.prefix(2), id: \.0) { insight in
+                                        InsightCard(
+                                            icon: insight.0,
+                                            title: insight.1,
+                                            description: insight.2,
+                                            color: insight.3
+                                        )
+                                    }
+                                }
+                                .padding(.horizontal)
                             }
-                            .padding(.horizontal)
                         }
                         
                         Spacer(minLength: 30)
@@ -143,6 +220,10 @@ struct SummaryView: View {
             }
         }
         .navigationBarHidden(true)
+        .onAppear {
+            // Recargar datos cuando aparece la vista
+            print("Sesiones totales: \(sessionStore.sessions.count)")
+        }
     }
 }
 
@@ -184,12 +265,13 @@ struct StatCard: View {
     }
 }
 
-// Componente para filas de sesión
+// Componente para filas de sesión - ACTUALIZADO
 struct SessionRow: View {
     let title: String
     let duration: String
     let date: String
     let completed: Bool
+    let focusPercentage: Int
     
     var body: some View {
         HStack(spacing: 15) {
@@ -202,6 +284,7 @@ struct SessionRow: View {
                     .font(.body)
                     .fontWeight(.medium)
                     .foregroundColor(.white)
+                    .lineLimit(1)
                 
                 Text(date)
                     .font(.caption)
@@ -210,14 +293,20 @@ struct SessionRow: View {
             
             Spacer()
             
-            Text(duration)
-                .font(.body)
-                .fontWeight(.semibold)
-                .foregroundColor(.white)
-                .padding(.horizontal, 12)
-                .padding(.vertical, 6)
-                .background(Color.white.opacity(0.1))
-                .cornerRadius(8)
+            VStack(alignment: .trailing, spacing: 4) {
+                Text(duration)
+                    .font(.body)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.white)
+                
+                Text("\(focusPercentage)%")
+                    .font(.caption)
+                    .foregroundColor(focusPercentage >= 80 ? .green : .orange)
+            }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 6)
+            .background(Color.white.opacity(0.1))
+            .cornerRadius(8)
         }
         .padding()
         .background(Color.white.opacity(0.05))
@@ -261,6 +350,6 @@ struct InsightCard: View {
 #Preview {
     NavigationView {
         SummaryView()
+            .environmentObject(SessionStore())
     }
 }
-

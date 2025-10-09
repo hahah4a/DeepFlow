@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct PreparationView: View {
+    @AppStorage("workDurationMinutes") private var workDurationMinutes = 60
     @State private var sessionObjective = ""
     @State private var isActive = false
     
@@ -107,7 +108,7 @@ struct PreparationView: View {
                 
                 // Enlace de navegación (oculto)
                 NavigationLink(
-                    destination: FocusView(),
+                    destination: FocusView(sessionObjective: sessionObjective),
                     isActive: $isActive
                 ) { EmptyView() }
             }
