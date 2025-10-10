@@ -45,6 +45,16 @@ struct ContentView: View {
                         }
                     }
                     .tag(2)
+                
+                AchievementsView()
+                        .tabItem {
+                            VStack {
+                                Image(systemName: selectedTab == 3 ? "medal.fill" : "medal")
+                                    .environment(\.symbolVariants, selectedTab == 3 ? .fill : .none)
+                                Text("Logros")
+                            }
+                        }
+                        .tag(3)
             }
             .accentColor(.white) // Color del tab seleccionado
             .onAppear {

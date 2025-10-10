@@ -85,7 +85,7 @@ struct SummaryView: View {
             VStack {
                 Rectangle()
                     .frame(width: 400, height: 0)
-                    .foregroundStyle(Color.blue)
+                    .foregroundStyle(Color.black.opacity(0.95))
                     .ignoresSafeArea()
                 
                 ScrollView {
