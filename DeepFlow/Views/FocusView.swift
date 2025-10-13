@@ -3,6 +3,8 @@ import UserNotifications
 
 struct FocusView: View {
     @AppStorage("workDurationMinutes") private var workDurationMinutes = 60
+    @AppStorage("enableSounds") private var enableSounds = true
+    @AppStorage("enableHaptics") private var enableHaptics = true
     @EnvironmentObject var sessionStore: SessionStore
     
     @State private var timeRemaining = 0
@@ -13,6 +15,8 @@ struct FocusView: View {
     @State private var sessionObjective = ""
     @State private var showObjectiveInput = true
     @StateObject private var notificationManager = NotificationManager.shared
+    @StateObject private var soundManager = SoundManager.shared
+    @StateObject private var tapticManager = TapticManager.shared
     
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
@@ -131,6 +135,11 @@ struct FocusView: View {
                         
                         // Botón de comenzar
                         Button(action: {
+                            // Feedback táctil
+                            if enableHaptics {
+                                tapticManager.impact(.medium)
+                            }
+                            
                             withAnimation {
                                 showObjectiveInput = false
                                 startSession()
@@ -230,10 +239,25 @@ struct FocusView: View {
                         // Controles
                         HStack(spacing: 20) {
                             Button(action: {
+                                // Feedback táctil
+                                if enableHaptics {
+                                    tapticManager.impact(.light)
+                                }
+                                
                                 timerIsRunning.toggle()
+                                
                                 if timerIsRunning {
+                                    // Sonido de reanudar
+                                    if enableSounds {
+                                        soundManager.playSound("session_start")
+                                    }
                                     notificationManager.scheduleSessionCompletionNotification(in: TimeInterval(timeRemaining))
                                 } else {
+                                    // Sonido de pausar
+                                    if enableSounds {
+                                        soundManager.playSound("session_pause")
+                                    }
+                                    soundManager.stopAllSounds()
                                     notificationManager.cancelAllNotifications()
                                 }
                             }) {
@@ -251,9 +275,20 @@ struct FocusView: View {
                             }
                             
                             Button(action: {
+                                // Feedback táctil
+                                if enableHaptics {
+                                    tapticManager.impact(.heavy)
+                                }
+                                
+                                // Sonido de cancelar
+                                if enableSounds {
+                                    soundManager.playSound("session_pause")
+                                }
+                                
                                 withAnimation {
                                     timerIsRunning = false
                                     timeRemaining = 0
+                                    soundManager.stopAllSounds()
                                     notificationManager.cancelAllNotifications()
                                     resetSession()
                                 }
@@ -292,6 +327,11 @@ struct FocusView: View {
                             .cornerRadius(16)
                             
                             Button(action: {
+                                // Feedback táctil
+                                if enableHaptics {
+                                    tapticManager.impact(.medium)
+                                }
+                                
                                 withAnimation {
                                     resetSession()
                                 }
@@ -342,6 +382,12 @@ struct FocusView: View {
         .onReceive(timer) { _ in
             if timerIsRunning && timeRemaining > 0 {
                 timeRemaining -= 1
+                
+                // Feedback cada minuto
+                if timeRemaining % 60 == 0 && timeRemaining > 0 && enableHaptics {
+                    tapticManager.selection()
+                }
+                
                 if timeRemaining == 0 {
                     timerIsRunning = false
                     sessionsCompleted += 1
@@ -369,12 +415,28 @@ struct FocusView: View {
             completed: true
         )
         sessionStore.addSession(session)
+        
+        // Feedback de completado
+        if enableHaptics {
+            tapticManager.notification(.success)
+        }
+        if enableSounds {
+            soundManager.playSound("session_complete")
+        }
     }
     
     private func startSession() {
         timeRemaining = workDurationMinutes * 60
         timerIsRunning = true
         startTime = Date()
+        
+        // Feedback de inicio
+        if enableHaptics {
+            tapticManager.notification(.success)
+        }
+        if enableSounds {
+            soundManager.playSound("session_start")
+        }
         
         notificationManager.scheduleSessionCompletionNotification(in: TimeInterval(timeRemaining))
     }
@@ -385,6 +447,7 @@ struct FocusView: View {
         timeRemaining = 0
         timerIsRunning = false
         startTime = nil
+        soundManager.stopAllSounds()
     }
 }
 

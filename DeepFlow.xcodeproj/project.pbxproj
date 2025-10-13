@@ -6,7 +6,20 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		6647EF182E99F8E00064B19F /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6647EF172E99F8DF0064B19F /* WidgetKit.framework */; };
+		6647EF1A2E99F8E00064B19F /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6647EF192E99F8E00064B19F /* SwiftUI.framework */; };
+		6647EF292E99F8E20064B19F /* DeepFlowWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 6647EF152E99F8DF0064B19F /* DeepFlowWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
+		6647EF272E99F8E20064B19F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6676E7832E948828002859C8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6647EF142E99F8DF0064B19F;
+			remoteInfo = DeepFlowWidgetExtension;
+		};
 		6676E7992E948829002859C8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6676E7832E948828002859C8 /* Project object */;
@@ -23,13 +36,48 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		6647EF2E2E99F8E20064B19F /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				6647EF292E99F8E20064B19F /* DeepFlowWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		6647EF152E99F8DF0064B19F /* DeepFlowWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = DeepFlowWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		6647EF172E99F8DF0064B19F /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		6647EF192E99F8E00064B19F /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		6676E78B2E948828002859C8 /* DeepFlow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DeepFlow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6676E7982E948829002859C8 /* DeepFlowTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DeepFlowTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6676E7A22E94882A002859C8 /* DeepFlowUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DeepFlowUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		6647EF2A2E99F8E20064B19F /* Exceptions for "DeepFlowWidget" folder in "DeepFlowWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 6647EF142E99F8DF0064B19F /* DeepFlowWidgetExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		6647EF1B2E99F8E00064B19F /* DeepFlowWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				6647EF2A2E99F8E20064B19F /* Exceptions for "DeepFlowWidget" folder in "DeepFlowWidgetExtension" target */,
+			);
+			path = DeepFlowWidget;
+			sourceTree = "<group>";
+		};
 		6676E78D2E948828002859C8 /* DeepFlow */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = DeepFlow;
@@ -48,6 +96,15 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		6647EF122E99F8DF0064B19F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6647EF1A2E99F8E00064B19F /* SwiftUI.framework in Frameworks */,
+				6647EF182E99F8E00064B19F /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6676E7882E948828002859C8 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -72,12 +129,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6647EF162E99F8DF0064B19F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6647EF172E99F8DF0064B19F /* WidgetKit.framework */,
+				6647EF192E99F8E00064B19F /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		6676E7822E948828002859C8 = {
 			isa = PBXGroup;
 			children = (
 				6676E78D2E948828002859C8 /* DeepFlow */,
 				6676E79B2E948829002859C8 /* DeepFlowTests */,
 				6676E7A52E94882A002859C8 /* DeepFlowUITests */,
+				6647EF1B2E99F8E00064B19F /* DeepFlowWidget */,
+				6647EF162E99F8DF0064B19F /* Frameworks */,
 				6676E78C2E948828002859C8 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -88,6 +156,7 @@
 				6676E78B2E948828002859C8 /* DeepFlow.app */,
 				6676E7982E948829002859C8 /* DeepFlowTests.xctest */,
 				6676E7A22E94882A002859C8 /* DeepFlowUITests.xctest */,
+				6647EF152E99F8DF0064B19F /* DeepFlowWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -95,6 +164,28 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		6647EF142E99F8DF0064B19F /* DeepFlowWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6647EF2B2E99F8E20064B19F /* Build configuration list for PBXNativeTarget "DeepFlowWidgetExtension" */;
+			buildPhases = (
+				6647EF112E99F8DF0064B19F /* Sources */,
+				6647EF122E99F8DF0064B19F /* Frameworks */,
+				6647EF132E99F8DF0064B19F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				6647EF1B2E99F8E00064B19F /* DeepFlowWidget */,
+			);
+			name = DeepFlowWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = DeepFlowWidgetExtension;
+			productReference = 6647EF152E99F8DF0064B19F /* DeepFlowWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		6676E78A2E948828002859C8 /* DeepFlow */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6676E7AC2E94882A002859C8 /* Build configuration list for PBXNativeTarget "DeepFlow" */;
@@ -102,10 +193,12 @@
 				6676E7872E948828002859C8 /* Sources */,
 				6676E7882E948828002859C8 /* Frameworks */,
 				6676E7892E948828002859C8 /* Resources */,
+				6647EF2E2E99F8E20064B19F /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				6647EF282E99F8E20064B19F /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				6676E78D2E948828002859C8 /* DeepFlow */,
@@ -173,6 +266,9 @@
 				LastSwiftUpdateCheck = 1630;
 				LastUpgradeCheck = 1630;
 				TargetAttributes = {
+					6647EF142E99F8DF0064B19F = {
+						CreatedOnToolsVersion = 16.3;
+					};
 					6676E78A2E948828002859C8 = {
 						CreatedOnToolsVersion = 16.3;
 					};
@@ -203,11 +299,19 @@
 				6676E78A2E948828002859C8 /* DeepFlow */,
 				6676E7972E948829002859C8 /* DeepFlowTests */,
 				6676E7A12E94882A002859C8 /* DeepFlowUITests */,
+				6647EF142E99F8DF0064B19F /* DeepFlowWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		6647EF132E99F8DF0064B19F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6676E7892E948828002859C8 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -232,6 +336,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		6647EF112E99F8DF0064B19F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6676E7872E948828002859C8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -256,6 +367,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		6647EF282E99F8E20064B19F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6647EF142E99F8DF0064B19F /* DeepFlowWidgetExtension */;
+			targetProxy = 6647EF272E99F8E20064B19F /* PBXContainerItemProxy */;
+		};
 		6676E79A2E948829002859C8 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 6676E78A2E948828002859C8 /* DeepFlow */;
@@ -269,6 +385,58 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		6647EF2C2E99F8E20064B19F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DeepFlowWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = DeepFlowWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = comLeo.DeepFlow.DeepFlowWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		6647EF2D2E99F8E20064B19F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DeepFlowWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = DeepFlowWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = comLeo.DeepFlow.DeepFlowWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		6676E7AA2E94882A002859C8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -513,6 +681,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		6647EF2B2E99F8E20064B19F /* Build configuration list for PBXNativeTarget "DeepFlowWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6647EF2C2E99F8E20064B19F /* Debug */,
+				6647EF2D2E99F8E20064B19F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		6676E7862E948828002859C8 /* Build configuration list for PBXProject "DeepFlow" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

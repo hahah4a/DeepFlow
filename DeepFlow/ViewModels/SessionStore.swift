@@ -1,4 +1,5 @@
 import Foundation
+import WidgetKit
 import SwiftUI
 
 class SessionStore: ObservableObject {
@@ -17,7 +18,8 @@ class SessionStore: ObservableObject {
     func addSession(_ session: Session) {
         sessions.insert(session, at: 0) // Agregar al inicio
         saveSessions()
-        checkAchievements() // Verificar logros después de agregar sesión
+        checkAchievements()// Verificar logros después de agregar sesión
+        updateWidgetData()
     }
     
     func getTodaysSessions() -> [Session] {
@@ -190,5 +192,22 @@ class SessionStore: ObservableObject {
             return jsonString
         }
         return "[]"
+    }
+    func updateWidgetData() {
+        // Usar App Group para compartir datos
+        if let sharedDefaults = UserDefaults(suiteName: "group.com.yourapp.deepflow") {
+            sharedDefaults.set(totalSessions(), forKey: "sessions_completed")
+            
+            let totalTime = totalFocusTime()
+            let hours = totalTime / 3600
+            let minutes = (totalTime % 3600) / 60
+            let focusTimeString = hours > 0 ? "\(hours)h \(minutes)m" : "\(minutes)m"
+            sharedDefaults.set(focusTimeString, forKey: "focus_time")
+            
+            sharedDefaults.synchronize()
+        }
+        
+        // Notificar al widget que se actualice
+        WidgetCenter.shared.reloadAllTimelines()
     }
 }
